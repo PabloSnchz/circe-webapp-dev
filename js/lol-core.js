@@ -265,16 +265,24 @@
       add('MEDIO', 8, 'Dos muertes tempranas', 'Revisá si fueron por gank o por trade forzado.');
     }
 
-    var csTarget = match.role === 'SUPPORT' ? 2 : (match.role === 'JUNGLE' ? 4.5 : 6);
-    if (csPerMin < csTarget * 0.75) {
-      add('ALTO', 15, 'Farmeo bajo: ' + csPerMin.toFixed(1) + ' CS/min',
-        'Para tu rol el piso es ' + csTarget + '. Perdés oro y niveles sin darte cuenta.');
-    } else if (csPerMin < csTarget) {
-      add('MEDIO', 7, 'Farmeo por debajo del objetivo: ' + csPerMin.toFixed(1) + ' CS/min',
-        'Objetivo para ' + match.role + ': ' + csTarget + ' CS/min.');
+    if (match.role !== 'SUPPORT') {
+      var csTarget = match.role === 'JUNGLE' ? 4.5 : 6;
+      if (csPerMin < csTarget * 0.75) {
+        add('ALTO', 15, 'Farmeo bajo: ' + csPerMin.toFixed(1) + ' CS/min',
+          'Para tu rol el piso es ' + csTarget + '. Perdés oro y niveles sin darte cuenta.');
+      } else if (csPerMin < csTarget) {
+        add('MEDIO', 7, 'Farmeo por debajo del objetivo: ' + csPerMin.toFixed(1) + ' CS/min',
+          'Objetivo para ' + match.role + ': ' + csTarget + ' CS/min.');
+      }
     }
 
-    if (match.role !== 'SUPPORT' && visionPerMin < 0.5) {
+    if (match.role === 'SUPPORT') {
+      // El support no farmea: su economía se mide en visión y en participación.
+      if (visionPerMin < 1.2) {
+        add('ALTO', 12, 'Visión baja para support: ' + visionPerMin.toFixed(2) + '/min',
+          'El objetivo del rol es 1.2 por minuto. Un centinela en cada recall y un control en cada objetivo.');
+      }
+    } else if (visionPerMin < 0.5) {
       add('MEDIO', 7, 'Visión escasa: ' + visionPerMin.toFixed(2) + ' por minuto',
         'Sin visión no hay picks ni defensa de objetivos. Un centinela por recall alcanza.');
     }
@@ -377,11 +385,17 @@
       tilt = 'Tus muertes subieron en las últimas partidas. Estás jugando más expuesto que antes.';
     }
 
+    // El CS no mide a un support: el promedio se calcula solo con las partidas
+    // donde farmear es parte del rol.
+    var farmGames = matches.filter(function (m) { return m.role !== 'SUPPORT'; });
+    var farmMinutes = farmGames.reduce(function (a, m) { return a + m.duration / 60; }, 0) || 1;
+
     return {
       games: matches.length,
       winrate: wins / matches.length,
       kda: (matches.reduce(function (a, m) { return a + m.kills + m.assists; }, 0)) / Math.max(1, matches.reduce(function (a, m) { return a + m.deaths; }, 0)),
-      csPerMin: matches.reduce(function (a, m) { return a + m.cs; }, 0) / totalMinutes,
+      csPerMin: farmGames.length ? farmGames.reduce(function (a, m) { return a + m.cs; }, 0) / farmMinutes : 0,
+      csGames: farmGames.length,
       visionPerMin: matches.reduce(function (a, m) { return a + m.vision; }, 0) / totalMinutes,
       deaths: average(matches, function (m) { return m.deaths; }),
       streak: streak,

@@ -177,7 +177,9 @@
     out.innerHTML =
       '<div class="lol-summary">' +
         '<div class="lol-stat"><span class="lol-stat__label">Partidas</span><strong class="lol-stat__value">' + s.games + '</strong><span class="lol-stat__hint">winrate ' + Math.round(s.winrate * 100) + '%</span></div>' +
-        '<div class="lol-stat"><span class="lol-stat__label">CS/min</span><strong class="lol-stat__value">' + s.csPerMin.toFixed(1) + ' ' + arrow(trend.csPerMin) + '</strong><span class="lol-stat__hint">tendencia reciente</span></div>' +
+        '<div class="lol-stat"><span class="lol-stat__label">' + (s.csGames ? 'CS/min' : 'Visión/min') + '</span><strong class="lol-stat__value">' +
+          (s.csGames ? s.csPerMin.toFixed(1) + ' ' + arrow(trend.csPerMin) : s.visionPerMin.toFixed(2)) +
+          '</strong><span class="lol-stat__hint">' + (s.csGames ? 'tendencia reciente' : 'rol support') + '</span></div>' +
         '<div class="lol-stat"><span class="lol-stat__label">Muertes</span><strong class="lol-stat__value">' + s.deaths.toFixed(1) + ' ' + arrow(trend.deaths, true) + '</strong><span class="lol-stat__hint">por partida</span></div>' +
       '</div>' +
       (s.tilt ? '<div class="lol-alert" role="alert">' + esc(s.tilt) + '</div>' : '') +

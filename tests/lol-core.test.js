@@ -93,8 +93,27 @@ const riot = core.normalizeMatch({
 eq(riot.result, 'W', 'traduce win a W');
 eq(riot.cs, 200, 'suma minions de línea y jungla');
 
-console.log('\n[6] reglas del proyecto');
-const css = fs.readFileSync(path.join(ROOT, 'css/lol.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+console.log('\n[5b] support: se mide en visión, no en farmeo');
+const supportOk = core.analyzeMatch({
+  champion: 'Rakan', role: 'SUPPORT', result: 'W', kills: 2, deaths: 1, assists: 7,
+  cs: 23, duration: 1128, vision: 44, teamKills: 24, events: []
+});
+ok(!supportOk.findings.some(f => f.title.indexOf('Farmeo') >= 0), 'no le exige farmeo a un support');
+ok(!supportOk.findings.some(f => f.title.indexOf('Visión baja') >= 0), 'con 2.3 de visión por minuto no alerta');
+
+const supportBad = core.analyzeMatch({
+  champion: 'Rakan', role: 'SUPPORT', result: 'L', kills: 0, deaths: 8, assists: 3,
+  cs: 10, duration: 1800, vision: 5, teamKills: 20, events: []
+});
+ok(supportBad.findings.some(f => f.title.indexOf('Visión baja') >= 0), 'detecta visión baja en support');
+
+const supportProgress = core.summarizeProgress([
+  { champion: 'Rakan', role: 'SUPPORT', result: 'W', kills: 1, deaths: 2, assists: 10, cs: 20, duration: 1800, vision: 30 }
+]);
+eq(supportProgress.csGames, 0, 'sin partidas de farmeo, csGames es 0');
+eq(supportProgress.csPerMin, 0, 'no promedia CS de support');
+
+console.log('\n[6] reglas del proyecto');const css = fs.readFileSync(path.join(ROOT, 'css/lol.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
 ok(!/!important/.test(css), 'css sin !important');
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 ok(html.indexOf('lol-core.js') > 0, 'index.html carga el motor');
