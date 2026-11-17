@@ -2,11 +2,12 @@
 
 - **Tipo:** nueva
 - **Estado:** listo
-- **Dónde la veo:** abrir `lol.html` en la raíz del sitio. Arriba hay un buscador "Nombre#TAG" con selector de región; debajo, el hero con rango, winrate, KDA promedio y racha, la forma reciente, los roles, los campeones y el historial de partidas.
+- **Dónde la veo:** https://pablosnchz.github.io/circe-webapp-dev/lol.html — arriba hay un buscador "Nombre#TAG" con selector de región; debajo, el hero con rango, winrate, KDA promedio y racha, la forma reciente, los roles, los campeones y el historial de partidas.
 - **Ruta:** `lol.html` (documento independiente; no entra al router)
 - **Descripción:** Perfil de invocador estilo Porofessor con estética Wild Rift. Sin frameworks, sin backend y sin tocar la app existente.
-- **Commits:** — (rama local `feat-lol-profile`, sin pushear)
-- **Rama:** `feat-lol-profile`
+- **Datos:** demo por defecto. Datos reales con el proxy de Riot incluido en `proxy/` (ver `proxy/README.md`); la URL se pega en la propia página.
+- **Commits:** `4ef18bc`, `7ea4ca1`, `fb6e1c3`
+- **Rama:** `feat-lol-profile` (mergeada a main)
 - **Si no entra:** la app queda exactamente igual: la página es un documento aparte que no modifica `index.html`, `router.js` ni las hojas de estilo existentes.
 - **Si sale mal:** si `js/lol-profile.js` falla, solo se rompe `lol.html`; ninguna otra pantalla carga ese archivo. Con datos demo no hay llamadas a Riot, así que no hay cuotas ni claves en juego.
 

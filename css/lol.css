@@ -185,6 +185,54 @@ body {
   color: var(--lol-tx-3);
 }
 
+/* ── Proxy de datos reales ──────────────────────────────────── */
+
+.lol-proxy {
+  margin-top: 10px;
+  border: 1px solid var(--lol-bd);
+  border-radius: var(--lol-radius);
+  background: rgba(10, 15, 26, 0.6);
+}
+
+.lol-proxy__summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--lol-tx-3);
+}
+.lol-proxy__summary:hover { color: var(--lol-tx-1); }
+
+.lol-proxy__form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: end;
+  padding: 0 14px 12px;
+}
+
+.lol-proxy__field { min-width: 0; }
+
+.lol-proxy__clear {
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--lol-bd);
+  background: transparent;
+  color: var(--lol-tx-2);
+  cursor: pointer;
+  transition: border-color var(--lol-ease), color var(--lol-ease);
+}
+.lol-proxy__clear:hover { border-color: rgba(255, 92, 122, 0.5); color: var(--lol-loss); }
+
+.lol-proxy__note {
+  margin: 0;
+  padding: 0 14px 12px;
+  font-size: 0.76rem;
+  color: var(--lol-tx-3);
+}
+.lol-proxy__note code { color: var(--lol-gold); }
+
 .lol-status:empty { display: none; }
 .lol-status { margin: 8px 2px 0; font-size: 0.85rem; color: var(--lol-tx-2); }
 
