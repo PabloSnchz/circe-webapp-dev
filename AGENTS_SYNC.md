@@ -25,10 +25,10 @@
 **Detalle:** Se agregó `> Versión actual del proyecto: v6.6.3` al header del
 AGENTS.md del Arquitecto. El tag `v1.1` se mantiene como versión del ecosistema.
 
-### Fix 2 · gw2-agents-dashboard documentado (Medium)
+### Fix 2 · dominique-gw2-dashboard documentado (Medium)
 
 Verificación: todos los agentes ya mencionaban el repo
-`https://github.com/PabloSnchz/gw2-agents-dashboard.git` en sus AGENTS.md.
+`https://github.com/PabloSnchz/dominique-gw2-dashboard.git` en sus AGENTS.md.
 **No se requirió cambio.** ✅
 
 ### Fix 3 · Nuevos logs documentados (Medium)

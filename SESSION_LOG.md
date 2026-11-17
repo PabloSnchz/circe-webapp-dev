@@ -1,3 +1,11 @@
+## 2026-11-17 — Perfil de invocador LoL (feat-lol-profile)
+
+- Nuevo: `lol.html`, `js/lol-profile.js`, `css/lol.css`, `tests/lol-profile.test.js`.
+- 50 asserts propios en verde (`node --test tests/lol-profile.test.js`).
+- Suite completa: 87 archivos; 2 fallos preexistentes y ajenos a esta feature (`hb90-t9-mutex`, `idea50f.cacheclear-real`).
+- Sin cambios en archivos existentes: `git status` muestra solo altas.
+
+
 ## HB#143 — 2026-10-02 (18:30–19:0x UTC) — ALERT-209: "ya esta aplicado" y "sigue abierto" son la MISMA afirmacion
 
 ### Que se hizo

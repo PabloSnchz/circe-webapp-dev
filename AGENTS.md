@@ -537,15 +537,15 @@ En `origin`:
 
 **Regla de oro:** el equipo NUNCA propone promover a `origin`. Pablo decide cuÃ¡ndo.
 
-> âš ï¸ **AclaraciÃ³n (2026-09-28):** en este ecosistema "origin" (producciÃ³n) = `gw2-wallet-ligero`. El remote git local `origin` apunta a `gw2-wallet-agents` (desarrollo), **NO** a producciÃ³n. VerificÃ¡: `git remote -v` â†’ `origin = gw2-wallet-agents`. Push a `origin` = push a **desarrollo**, no a producciÃ³n.
+> âš ï¸ **AclaraciÃ³n (2026-09-28):** en este ecosistema "origin" (producciÃ³n) = `gw2-wallet-ligero`. El remote git local `origin` apunta a `dominique-gw2-wallet-dev` (desarrollo), **NO** a producciÃ³n. VerificÃ¡: `git remote -v` â†’ `origin = dominique-gw2-wallet-dev`. Push a `origin` = push a **desarrollo**, no a producciÃ³n.
 
-> âš ï¸ **AclaraciÃ³n (2026-09-28):** en este ecosistema "origin" (producciÃ³n) = `gw2-wallet-ligero`. El remote git local `origin` apunta a `gw2-wallet-agents` (desarrollo), **NO** a producciÃ³n. VerificÃ¡ siempre: `git remote -v` ! `origin = gw2-wallet-agents`. Push a `origin` (local) = push a **desarrollo**, no a producciÃ³n.
+> âš ï¸ **AclaraciÃ³n (2026-09-28):** en este ecosistema "origin" (producciÃ³n) = `gw2-wallet-ligero`. El remote git local `origin` apunta a `dominique-gw2-wallet-dev` (desarrollo), **NO** a producciÃ³n. VerificÃ¡ siempre: `git remote -v` ! `origin = dominique-gw2-wallet-dev`. Push a `origin` (local) = push a **desarrollo**, no a producciÃ³n.
 
 ### ðŸš« Regla de oro sobre `origin`
 
 1. El equipo **NUNCA propone** promover a `origin`. Ni en TEAM_STATUS, ni en SESSION_LOG, ni en escalados, ni en cualquier comunicaciÃ³n.
 2. `origin` es dominio exclusivo de Pablo. Ã‰l decide cuÃ¡ndo y quÃ© promover. Cuando Pablo quiera, Ã‰L lo pide.
-3. El universo del equipo es `agents` (gw2-wallet-agents). AhÃ­ trabajan, ahÃ­ commitean, ahÃ­ pushean. Punto.
+3. El universo del equipo es `agents` (dominique-gw2-wallet-dev). AhÃ­ trabajan, ahÃ­ commitean, ahÃ­ pushean. Punto.
 4. Si un agente piensa "esto estÃ¡ listo para producciÃ³n", **NO lo dice**. NO es su rol evaluarlo. Su trabajo termina en `agents`.
 5. Si Pablo pide promover algo, ENTONCES el equipo colabora con la promociÃ³n. Pero solo cuando Pablo lo pide explÃ­citamente.
 ### âŒ REGLA DE ORO â€” CÃ³digo a construir vs cÃ³digo a deprecar (2026-09-28)
@@ -607,9 +607,9 @@ Cuando una comunicaciÃ³n tuya pasa a estado "Timeout":
 
 MÃ¡ximo: 3 reintentos. DespuÃ©s, escalado obligatorio.
 
-## ðŸ“‹ Nuevo repo: gw2-agents-dashboard
+## ðŸ“‹ Nuevo repo: dominique-gw2-dashboard
 
-- **URL:** https://github.com/PabloSnchz/gw2-agents-dashboard.git
+- **URL:** https://github.com/PabloSnchz/dominique-gw2-dashboard.git
 - **PropÃ³sito:** Tablero HTML de monitoreo del ecosistema de agentes
 - **Tu acceso:** Lectura + Escritura (ConfiguraciÃ³n del ecosistema + implementaciÃ³n del tablero)
 
@@ -679,7 +679,7 @@ tienen que asegurar que no rompan cosas.
 
 ## ðŸš« No tocar el dashboard
 
-NO tocÃ¡s el repo gw2-agents-dashboard. Su dueÃ±o es el Arquitecto. Tu universo es gw2-wallet-agents (remote `agents`).
+NO tocÃ¡s el repo dominique-gw2-dashboard. Su dueÃ±o es el Arquitecto. Tu universo es dominique-gw2-wallet-dev (remote `agents`).
 
 Si Pablo te pide algo del dashboard, derivÃ¡ al Arquitecto.
 
