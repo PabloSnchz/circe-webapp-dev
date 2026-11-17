@@ -124,6 +124,9 @@ export function roleFromLane(lane, role) {
   if (l === 'TOP') return 'TOP';
   if (l === 'MIDDLE' || l === 'MID') return 'MID';
   if (l === 'BOTTOM' || l === 'BOT') return r === 'DUO_SUPPORT' ? 'SUPPORT' : 'ADC';
+  if (r === 'SUPPORT') return 'SUPPORT';
+  if (r === 'DUO' || r === 'DUO_CARRY' || r === 'CARRY') return 'ADC';
+  if (r === 'SOLO') return 'TOP';
   return 'MID';
 }
 
@@ -162,7 +165,11 @@ function cors() {
   return {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
+    'Access-Control-Allow-Headers': 'Content-Type',
+    // Chrome/Edge piden este header cuando una página HTTPS llama a localhost
+    // (Private Network Access). Sin él, la página publicada no puede hablar
+    // con el puente.
+    'Access-Control-Allow-Private-Network': 'true'
   };
 }
 
@@ -186,6 +193,19 @@ async function buildProfile(lock, byKey) {
     games = (fallback && fallback.games) || [];
   }
 
+  // El resumen trae solo mi participante: no permite calcular las muertes del
+  // equipo ni el carril. Para las últimas 10 partidas se pide el detalle, que
+  // sí trae los 10 participantes. El resto queda como resumen.
+  const detailed = await Promise.all(games.slice(0, 10).map((game) =>
+    lcuRequest(lock, '/lol-match-history/v1/games/' + game.gameId).catch(() => null)
+  ));
+  const full = games.map((game, index) => (index < detailed.length && detailed[index]) || game);
+
+  const matches = full
+    .map((game) => normalizeGame(game, puuid, byKey))
+    .filter((match) => match.duration > 0)
+    .filter((match) => match.kills + match.deaths + match.assists + match.cs > 0);
+
   return {
     summoner: {
       name: summoner.gameName || summoner.displayName || 'Invocador',
@@ -195,7 +215,7 @@ async function buildProfile(lock, byKey) {
       iconId: Number(summoner.profileIconId || 29)
     },
     rank: normalizeRank(rankPayload),
-    matches: games.map((game) => normalizeGame(game, puuid, byKey)).filter((match) => match.duration > 0),
+    matches,
     demo: false
   };
 }
