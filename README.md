@@ -39,7 +39,24 @@ python -m http.server 8080   # o cualquier servidor estático
 node --test "tests/**/*.test.js"
 ```
 
-## Datos
+## Datos reales desde tu cliente (sin clave de Riot)
+
+Con el cliente de League abierto, el puente local lee tu perfil y tus partidas:
+
+```bash
+node tools/lcu-bridge.mjs          # http://127.0.0.1:8787
+```
+
+Después pegá `http://127.0.0.1:8787` en la pestaña **Perfil**. Desde ahí:
+
+- **Draft** → *Leer champ select*: llena la composición en vivo.
+- **Progreso** → *Traer del cliente*: trae tus últimas 20 partidas.
+- **Perfil** → *Analizar*: tu invocador, rango e historial reales.
+
+Sin el cliente abierto, `node tools/lcu-bridge.mjs --demo` sirve datos de ejemplo
+para probar la interfaz.
+
+## Datos por la Riot API (sitio publicado)
 
 | Fuente | Qué aporta | Clave |
 |---|---|---|

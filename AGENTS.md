@@ -14,6 +14,8 @@ Proyecto: página de perfil de invocador de League of Legends, estática.
 |---|---|
 | Tests | `node --test "tests/**/*.test.js"` |
 | Servir local | `python -m http.server 8080` |
+| Puente con el cliente | `node tools/lcu-bridge.mjs` |
+| Puente en demo | `node tools/lcu-bridge.mjs --demo` |
 | Publicar | push a `main` (Pages republica solo) |
 
 ## Reglas
