@@ -1,8 +1,14 @@
-# Circe — Perfil de invocador
+# Circe — herramientas de League of Legends
 
-Página estática de perfil de invocador de **League of Legends**, estilo
-Porofessor con la estética de **Wild Rift**: rango, winrate, forma reciente,
-roles, campeones e historial.
+Cuatro herramientas en una página estática, sin cuenta y sin tracking: todo
+corre en el navegador.
+
+| Pestaña | Qué hace |
+|---|---|
+| **Perfil** | Perfil de invocador: rango, winrate, forma, roles, campeones e historial |
+| **Draft** | Analiza la composición: frontline, engage, daño, escalado, condición de victoria |
+| **Progreso** | Tendencias personales: CS/min, muertes, winrate por campeón y parche, señal de tilt |
+| **Análisis** | Coach post-partida: hallazgos con severidad y puntaje |
 
 - **Sitio:** https://pablosnchz.github.io/circe-webapp-dev/
 - **Stack:** HTML, CSS y JavaScript vanilla. Sin frameworks, sin build, sin backend.
@@ -10,10 +16,12 @@ roles, campeones e historial.
 ## Estructura
 
 ```
-index.html            la página
+index.html            la página con las cuatro pestañas
 css/lol.css           estilos (prefijo .lol-, sin !important)
-js/lol-profile.js     módulo: datos, render y proveedores
-tests/                pruebas del módulo (node --test)
+js/lol-profile.js     perfil de invocador + proveedores de datos
+js/lol-core.js        motor: draft, progreso y coach (funciones puras)
+js/lol-ui.js          interfaz de las tres herramientas
+tests/                pruebas de los motores (node --test)
 proxy/                proxy para la Riot API (Worker de Cloudflare)
 ```
 
