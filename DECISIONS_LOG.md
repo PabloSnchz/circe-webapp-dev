@@ -1,3 +1,20 @@
+### [2026-11-17] Perfil de LoL como página independiente, con proveedor de datos y demo determinista
+
+**Contexto:** Pablo pidió una página de usuario de LoL estilo Porofessor, con mejor estilo e inspirada en la estética de Wild Rift, reutilizando conceptualmente el código de `gw2-wallet-agents`.
+
+**Decisión:**
+1. Documento propio: `lol.html` + `js/lol-profile.js` + `css/lol.css`, en vez de una ruta nueva en `router.js`.
+2. Proveedor de datos con dos implementaciones: `demoProfile` (determinista, sin red) y `proxyProfile` (endpoint propio).
+3. Íconos y splash desde Data Dragon (CDN público).
+4. El módulo exporta funciones puras para poder testear sin DOM ni red.
+
+**Motivo:** cero riesgo de regresión sobre un router de 91 KB y un `index.html` de 1529 líneas. Y sin backend, la única forma honesta de mostrar datos reales de Riot es un proxy: la Riot API no permite CORS desde el navegador.
+
+**Alternativas:** ruta nueva en el router (descartada por riesgo de regresión); iframe (descartada por peso y accesibilidad).
+
+**Consecuencias:** la página no aparece en el sidebar; se llega por URL directa. Para datos reales hay que configurar la URL del proxy en `gn:lol:proxy`.
+
+
 # DECISIONS_LOG.md
 
 > Registro de decisiones importantes del equipo de agentes.

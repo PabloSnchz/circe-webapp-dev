@@ -1,0 +1,486 @@
+/*!
+ * lol.css v1.0.0 — Página de perfil LoL (lol.html)
+ *
+ * Hoja aislada: se carga SOLO en lol.html, no en index.html. Por eso no entra
+ * en las 3 capas de la app (main.css / theme-polish.css / *-theme.js): no
+ * comparte cascada con ellas y no puede romperlas. Se mantiene la receta
+ * visual del proyecto (borde 1px rgba(255,255,255,.08), borde izquierdo
+ * semántico de 3px, glow suave, hover -3px, transición .22s) y no se usa
+ * !important. Todos los selectores llevan prefijo .lol-.
+ */
+
+:root {
+  --lol-bg-0: #05070d;
+  --lol-bg-1: #0a0f1a;
+  --lol-bg-2: #111a2b;
+  --lol-bg-3: #17233a;
+  --lol-gold: #c8aa6e;
+  --lol-gold-soft: #f0e6d2;
+  --lol-blue: #0ac8b9;
+  --lol-blue-2: #1e90ff;
+  --lol-win: #2fd0a5;
+  --lol-loss: #ff5c7a;
+  --lol-tx-1: #eef2f8;
+  --lol-tx-2: #a8b3c7;
+  --lol-tx-3: #6f7c93;
+  --lol-bd: rgba(255, 255, 255, 0.08);
+  --lol-radius: 14px;
+  --lol-glow: 0 0 18px rgba(30, 144, 255, 0.18);
+  --lol-ease: 0.22s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(30, 144, 255, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(200, 170, 110, 0.08), transparent 55%),
+    var(--lol-bg-0);
+  color: var(--lol-tx-1);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.lol-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--lol-bg-3);
+  color: var(--lol-tx-1);
+  padding: 10px 16px;
+  border-radius: 0 0 10px 0;
+  z-index: 10;
+}
+.lol-skip:focus { left: 0; }
+
+/* ── Header ─────────────────────────────────────────────────── */
+
+.lol-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--lol-bd);
+  background: linear-gradient(180deg, rgba(17, 26, 43, 0.9), rgba(5, 7, 13, 0.4));
+}
+
+.lol-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.lol-brand__mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 170, 110, 0.5);
+  background: linear-gradient(145deg, rgba(200, 170, 110, 0.22), rgba(10, 200, 185, 0.12));
+  color: var(--lol-gold-soft);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.lol-brand__text { display: grid; line-height: 1.15; }
+.lol-brand__title {
+  font-family: "Cinzel Decorative", "Segoe UI", serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.4px;
+  color: var(--lol-gold-soft);
+}
+.lol-brand__sub { font-size: 0.75rem; color: var(--lol-tx-3); text-transform: uppercase; letter-spacing: 1.2px; }
+
+.lol-top__link {
+  color: var(--lol-tx-2);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border: 1px solid var(--lol-bd);
+  border-radius: 999px;
+  padding: 7px 14px;
+  transition: border-color var(--lol-ease), color var(--lol-ease), transform var(--lol-ease);
+}
+.lol-top__link:hover { color: var(--lol-blue); border-color: rgba(10, 200, 185, 0.5); transform: translateY(-2px); }
+
+/* ── Layout ─────────────────────────────────────────────────── */
+
+.lol-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+.lol-lead { margin: 0 0 18px; color: var(--lol-tx-2); }
+.lol-lead strong { color: var(--lol-tx-1); }
+
+/* ── Buscador ───────────────────────────────────────────────── */
+
+.lol-search {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 130px auto;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+  border: 1px solid var(--lol-bd);
+  border-radius: var(--lol-radius);
+  background: linear-gradient(160deg, rgba(17, 26, 43, 0.9), rgba(10, 15, 26, 0.9));
+  box-shadow: var(--lol-glow);
+}
+
+.lol-search__field { display: grid; gap: 6px; }
+
+.lol-search__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--lol-tx-3);
+}
+
+.lol-search__input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--lol-bd);
+  background: var(--lol-bg-0);
+  color: var(--lol-tx-1);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--lol-ease), box-shadow var(--lol-ease);
+}
+.lol-search__input:focus {
+  border-color: rgba(10, 200, 185, 0.6);
+  box-shadow: 0 0 0 3px rgba(10, 200, 185, 0.12);
+}
+
+.lol-search__go {
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 170, 110, 0.55);
+  background: linear-gradient(145deg, rgba(200, 170, 110, 0.28), rgba(200, 170, 110, 0.10));
+  color: var(--lol-gold-soft);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: transform var(--lol-ease), filter var(--lol-ease), box-shadow var(--lol-ease);
+}
+.lol-search__go:hover { transform: translateY(-2px); filter: brightness(1.12); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45); }
+.lol-search__go:active { transform: translateY(0); }
+.lol-search__go:focus-visible { outline: 2px solid var(--lol-blue); outline-offset: 2px; }
+
+.lol-search__hint {
+  margin: 10px 2px 0;
+  font-size: 0.78rem;
+  color: var(--lol-tx-3);
+}
+
+.lol-status:empty { display: none; }
+.lol-status { margin: 8px 2px 0; font-size: 0.85rem; color: var(--lol-tx-2); }
+
+/* ── Hero ───────────────────────────────────────────────────── */
+
+.lol-hero {
+  position: relative;
+  margin-top: 20px;
+  border: 1px solid var(--lol-bd);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--lol-bg-1);
+  min-height: 190px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.lol-hero__art {
+  position: absolute;
+  inset: 0;
+  background-image: var(--splash);
+  background-size: cover;
+  background-position: center 22%;
+  opacity: 0.5;
+  filter: saturate(1.05);
+  transform: scale(1.02);
+}
+
+.lol-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 7, 13, 0.15) 0%, rgba(5, 7, 13, 0.75) 62%, rgba(5, 7, 13, 0.95) 100%),
+    linear-gradient(90deg, rgba(10, 200, 185, 0.16), transparent 45%);
+}
+
+.lol-hero__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.lol-hero__avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 16px;
+  border: 1px solid rgba(200, 170, 110, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 0 3px rgba(5, 7, 13, 0.7);
+  background: var(--lol-bg-2);
+  object-fit: cover;
+}
+
+.lol-hero__id { display: grid; gap: 2px; min-width: 0; }
+
+.lol-hero__name {
+  margin: 0;
+  font-size: 1.55rem;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.lol-hero__tag { color: var(--lol-tx-3); font-size: 1rem; font-weight: 500; }
+
+.lol-hero__meta { margin: 0; color: var(--lol-tx-2); font-size: 0.85rem; }
+
+.lol-demo {
+  color: var(--lol-gold);
+  border: 1px solid rgba(200, 170, 110, 0.45);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Rango ──────────────────────────────────────────────────── */
+
+.lol-rank {
+  margin-left: auto;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--lol-bd);
+  background: rgba(5, 7, 13, 0.62);
+  backdrop-filter: blur(6px);
+}
+
+.lol-rank__gem {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #06101c;
+  background: linear-gradient(160deg, var(--rank-color), rgba(255, 255, 255, 0.75));
+  clip-path: polygon(50% 0%, 100% 38%, 50% 100%, 0% 38%);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--rank-color) 55%, transparent);
+}
+
+.lol-rank__tier { font-size: 0.78rem; letter-spacing: 1.2px; color: var(--lol-tx-1); text-transform: uppercase; }
+.lol-rank__lp { font-size: 0.72rem; color: var(--lol-tx-3); }
+
+/* ── Resumen ────────────────────────────────────────────────── */
+
+.lol-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.lol-stat {
+  display: grid;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--lol-bd);
+  border-left: 3px solid rgba(10, 200, 185, 0.5);
+  border-radius: var(--lol-radius);
+  background: var(--lol-bg-1);
+  transition: transform var(--lol-ease), box-shadow var(--lol-ease);
+}
+.lol-stat:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45); }
+
+.lol-stat__label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.1px; color: var(--lol-tx-3); }
+.lol-stat__value { font-size: 1.5rem; letter-spacing: 0.4px; }
+.lol-stat__value.is-win { color: var(--lol-win); }
+.lol-stat__value.is-loss { color: var(--lol-loss); }
+.lol-stat__hint { font-size: 0.76rem; color: var(--lol-tx-3); }
+
+/* ── Paneles ────────────────────────────────────────────────── */
+
+.lol-panel {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--lol-bd);
+  border-radius: var(--lol-radius);
+  background: linear-gradient(165deg, rgba(17, 26, 43, 0.85), rgba(10, 15, 26, 0.85));
+}
+
+.lol-panel__title {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--lol-gold);
+  font-weight: 600;
+}
+
+.lol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 14px;
+  align-items: start;
+}
+
+/* ── Forma reciente ─────────────────────────────────────────── */
+
+.lol-form { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.lol-form__chip {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid var(--lol-bd);
+}
+.lol-form__chip.is-win { color: var(--lol-win); border-color: rgba(47, 208, 165, 0.45); background: rgba(47, 208, 165, 0.10); }
+.lol-form__chip.is-loss { color: var(--lol-loss); border-color: rgba(255, 92, 122, 0.45); background: rgba(255, 92, 122, 0.10); }
+
+/* ── Roles ──────────────────────────────────────────────────── */
+
+.lol-roles { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.lol-role { display: grid; grid-template-columns: 74px 1fr 86px; gap: 10px; align-items: center; }
+.lol-role__name { font-size: 0.78rem; letter-spacing: 1px; color: var(--lol-tx-2); }
+.lol-role__bar { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.lol-role__fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(10, 200, 185, 0.9), rgba(30, 144, 255, 0.75)); }
+.lol-role__value { text-align: right; font-size: 0.8rem; color: var(--lol-tx-1); }
+.lol-role__value em { color: var(--lol-tx-3); font-style: normal; font-size: 0.72rem; }
+
+/* ── Campeones ──────────────────────────────────────────────── */
+
+.lol-champs { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; }
+
+.lol-champ {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--lol-bd);
+  border-radius: 12px;
+  background: rgba(5, 7, 13, 0.55);
+  transition: transform var(--lol-ease), border-color var(--lol-ease);
+}
+.lol-champ:hover { transform: translateY(-3px); border-color: rgba(200, 170, 110, 0.45); }
+
+.lol-champ__icon { width: 46px; height: 46px; border-radius: 10px; background: var(--lol-bg-3); object-fit: cover; }
+.lol-champ__body { min-width: 0; }
+.lol-champ__name { margin: 0; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lol-champ__meta { margin: 2px 0 0; display: flex; gap: 6px; flex-wrap: wrap; font-size: 0.7rem; color: var(--lol-tx-3); }
+
+/* ── Historial ──────────────────────────────────────────────── */
+
+.lol-matches { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+
+.lol-match {
+  display: grid;
+  grid-template-columns: 44px minmax(110px, 1.1fr) 0.9fr 0.9fr 1.3fr;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid var(--lol-bd);
+  border-left: 3px solid transparent;
+  border-radius: 12px;
+  background: rgba(5, 7, 13, 0.5);
+  transition: transform var(--lol-ease), background var(--lol-ease);
+}
+.lol-match:hover { transform: translateX(3px); background: rgba(23, 35, 58, 0.6); }
+.lol-match.is-win { border-left-color: rgba(47, 208, 165, 0.6); }
+.lol-match.is-loss { border-left-color: rgba(255, 92, 122, 0.6); }
+
+.lol-match__icon { width: 40px; height: 40px; border-radius: 10px; background: var(--lol-bg-3); object-fit: cover; }
+.lol-match__champ { display: grid; line-height: 1.2; min-width: 0; }
+.lol-match__champ strong { font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lol-match__champ span { font-size: 0.7rem; color: var(--lol-tx-3); letter-spacing: 1px; }
+.lol-match__result { font-size: 0.82rem; font-weight: 600; }
+.lol-match.is-win .lol-match__result { color: var(--lol-win); }
+.lol-match.is-loss .lol-match__result { color: var(--lol-loss); }
+.lol-match__kda { font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.lol-match__meta { display: flex; gap: 10px; justify-content: flex-end; font-size: 0.74rem; color: var(--lol-tx-3); flex-wrap: wrap; }
+
+/* ── Estados ────────────────────────────────────────────────── */
+
+.lol-empty, .lol-error {
+  margin-top: 18px;
+  padding: 34px 22px;
+  text-align: center;
+  border: 1px dashed var(--lol-bd);
+  border-radius: var(--lol-radius);
+  color: var(--lol-tx-2);
+}
+.lol-empty__sub { color: var(--lol-tx-3); font-size: 0.85rem; }
+.lol-empty code { color: var(--lol-gold); }
+.lol-error { border-style: solid; border-left: 3px solid rgba(255, 92, 122, 0.7); text-align: left; }
+.lol-error strong { color: var(--lol-loss); }
+
+.lol-empty-inline { margin: 0; color: var(--lol-tx-3); font-size: 0.85rem; }
+
+.lol-skeleton { margin-top: 20px; display: grid; gap: 12px; }
+.lol-skeleton__hero, .lol-skeleton__row {
+  border-radius: var(--lol-radius);
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.09) 40%, rgba(255, 255, 255, 0.04) 60%);
+  background-size: 220% 100%;
+  animation: lol-shimmer 1.4s infinite linear;
+}
+.lol-skeleton__hero { height: 190px; }
+.lol-skeleton__row { height: 58px; }
+
+@keyframes lol-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+
+.is-broken { opacity: 0.25; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .lol-grid { grid-template-columns: 1fr; }
+  .lol-search { grid-template-columns: 1fr 110px; }
+  .lol-search__go { grid-column: 1 / -1; }
+  .lol-match { grid-template-columns: 40px 1fr auto; grid-template-areas: "icon champ kda" "icon result meta"; row-gap: 2px; }
+  .lol-match__icon { grid-area: icon; }
+  .lol-match__champ { grid-area: champ; }
+  .lol-match__result { grid-area: result; }
+  .lol-match__kda { grid-area: kda; }
+  .lol-match__meta { grid-area: meta; justify-content: flex-start; }
+}
+
+@media (max-width: 560px) {
+  .lol-summary { grid-template-columns: 1fr; }
+  .lol-hero__name { font-size: 1.25rem; }
+  .lol-rank { margin-left: 0; }
+  .lol-role { grid-template-columns: 60px 1fr 74px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms; animation-iteration-count: 1; transition-duration: 0.001ms; }
+}
