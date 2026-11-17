@@ -111,9 +111,9 @@ Reglas transversales de escritura:
 
 | repo | quién pushea | quién solo lee | quién no toca |
 |------|--------------|----------------|----------------|
-| `PabloSnchz/gw2-wallet-agents` (DESARROLLO) | Principal a `main`. Documentador y PO a su propia rama, y avisan al Principal para el merge | todos los agentes | nadie está excluido. Autonomía total |
+| `PabloSnchz/dominique-gw2-wallet-dev` (DESARROLLO) | Principal a `main`. Documentador y PO a su propia rama, y avisan al Principal para el merge | todos los agentes | nadie está excluido. Autonomía total |
 | `PabloSnchz/gw2-wallet-ligero` (PRODUCCIÓN) | **Arquitecto** (`architect`), y únicamente sobre la lista de archivos que Pablo aprobó en pantalla (ver 7.1). **Antes del 2026-10-03: solo Pablo** | todos los agentes | El equipo no promueve **ni propone** promover. Ni en `TEAM_STATUS.md`, ni en `SESSION_LOG.md`, ni en escalados, ni en ninguna comunicación |
-| `PabloSnchz/gw2-agents-dashboard` (Dashboard) | Arquitecto. Es su producto | Principal y agentes | Los agentes operativos NO tocan el dashboard. Si hace falta un cambio, va al Arquitecto |
+| `PabloSnchz/dominique-gw2-dashboard` (Dashboard) | Arquitecto. Es su producto | Principal y agentes | Los agentes operativos NO tocan el dashboard. Si hace falta un cambio, va al Arquitecto |
 
 ### Los 3 repos y sus remotes
 
@@ -125,10 +125,10 @@ daba como vigentes.
 
 | path local | remote |Clone de | who push |
 |---|---|---|---|
-| `C:\Mis Archivos\GW2 online\gw2-dev` | `origin` → `gw2-wallet-agents.git` | desarrollo | el equipo (Principal a `main`) |
+| `C:\Mis Archivos\GW2 online\gw2-dev` | `origin` → `dominique-gw2-wallet-dev.git` | desarrollo | el equipo (Principal a `main`) |
 | `C:\Mis Archivos\GW2 online\gw2-prod` | `origin` → `gw2-wallet-ligero.git` | producción | Arquitecto, tras OK de lista de Pablo |
-| `C:\Mis Archivos\GW2 online\gw2-agents-dashboard` | `origin` → `gw2-agents-dashboard.git` | dashboard | Arquitecto |
-| ~~`gw2-wallet-agents`~~ / ~~`gw2-wallet-ligero`~~ | — | — | **RETIRADOS.** No volver a usarlos ni referenciarlos |
+| `C:\Mis Archivos\GW2 online\dominique-gw2-dashboard` | `origin` → `dominique-gw2-dashboard.git` | dashboard | Arquitecto |
+| ~~`dominique-gw2-wallet-dev`~~ / ~~`gw2-wallet-ligero`~~ | — | — | **RETIRADOS.** No volver a usarlos ni referenciarlos |
 
 **En `gw2-prod` no existe el remote `agents`.** Por eso la promoción **no es un
 cherry-pick**: los dos repos de GitHub son distintos y no comparten historia.
@@ -151,7 +151,7 @@ Verificar después con `git ls-remote --heads agents`.
 
 El trabajo activo ocurre en worktrees para no ensuciar el clon principal:
 `C:\Users\psanc\.qwenpaw\workspaces\default\_wt_main` es el worktree de
-`main` de `gw2-wallet-agents`. Los logs se editan en el worktree y se commitean
+`main` de `dominique-gw2-wallet-dev`. Los logs se editan en el worktree y se commitean
 desde ahí. Nunca usar `Set-Content` de PowerShell sobre los `.md` del repo: mete
 BOM y reescribe finales de línea, inflando el diff.
 
@@ -185,7 +185,7 @@ BOM y reescribe finales de línea, inflando el diff.
 
 - El MCP `mi-repo-boveda` es `@modelcontextprotocol/server-filesystem`: no
   distingue lectura de escritura por path. Los 5 agentes tienen
-  `C:\Mis Archivos\GW2 online\gw2-wallet-agents` en sus args, así que los 5
+  `C:\Mis Archivos\GW2 online\dominique-gw2-wallet-dev` en sus args, así que los 5
   **pueden escribir en el repo agents**. Lo único que los frena es la sección
   "Permisos" de su `AGENTS.md`.
 - Por eso la prohibición de escribir en `gw2-wallet-ligero` (producción) es
@@ -308,10 +308,10 @@ mitad, lo peor que queda son dos ramas inertes borrables.
 
 ### 7.2 Autonomía
 
-- En `gw2-wallet-agents`: autonomía total. Features, refactors, experimentos.
+- En `dominique-gw2-wallet-dev`: autonomía total. Features, refactors, experimentos.
   No hace falta validar con Pablo. Si algo se rompe, se arregla o se revierte.
 - En `gw2-wallet-ligero`: cero. Solo cuando Pablo lo pide.
-- En `gw2-agents-dashboard`: solo el Arquitecto.
+- En `dominique-gw2-dashboard`: solo el Arquitecto.
 
 ### 7.3 Fallbacks
 
