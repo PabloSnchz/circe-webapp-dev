@@ -18,6 +18,24 @@
   var champions = [];
   var profileMounted = false;
 
+  function bridgeUrl() {
+    try { return (localStorage.getItem('gn:lol:proxy') || '').replace(/\/+$/, ''); } catch (error) { return ''; }
+  }
+
+  function fetchBridge(path) {
+    var base = bridgeUrl();
+    if (!base) return Promise.reject(new Error('Primero pegá la URL del puente en la pestaña Perfil.'));
+    return fetch(base + path).then(function (response) {
+      if (!response.ok) throw new Error('El puente respondió ' + response.status);
+      return response.json();
+    });
+  }
+
+  function showError(target, message) {
+    var out = $(target);
+    if (out) out.innerHTML = '<div class="lol-error" role="alert">' + esc(message) + '</div>';
+  }
+
   // ── Pestañas ────────────────────────────────────────────────
 
   function activate(name) {
@@ -66,6 +84,7 @@
     }).join('') + '</div>' +
       '<div class="lol-draft-actions">' +
         '<button class="lol-search__go" type="submit">Analizar draft</button>' +
+        '<button class="lol-proxy__clear" type="button" data-draft="lcu">Leer champ select</button>' +
         '<button class="lol-proxy__clear" type="button" data-draft="demo">Cargar ejemplo</button>' +
       '</div>';
     form.setAttribute('data-built', '1');
@@ -75,10 +94,23 @@
       renderDraft(readDraftForm());
     });
     form.addEventListener('click', function (event) {
-      var demo = event.target.closest('[data-draft="demo"]');
-      if (!demo) return;
-      fillDraft(core.demoDraft());
-      renderDraft(core.demoDraft());
+      if (event.target.closest('[data-draft="demo"]')) {
+        fillDraft(core.demoDraft());
+        renderDraft(core.demoDraft());
+        return;
+      }
+      if (event.target.closest('[data-draft="lcu"]')) {
+        fetchBridge('/draft').then(function (live) {
+          if (!live || !live.allies || !live.allies.length) {
+            showError('[data-draft="out"]', 'No hay champ select en curso. Abrí una partida en el cliente y probá de nuevo.');
+            return;
+          }
+          fillDraft(live);
+          renderDraft(readDraftForm());
+        }).catch(function (error) {
+          showError('[data-draft="out"]', error.message);
+        });
+      }
     });
   }
 
@@ -205,10 +237,20 @@
         renderProgress(data);
       });
       progressForm.addEventListener('click', function (event) {
-        if (!event.target.closest('[data-progress="demo"]')) return;
-        var demo = core.demoMatches();
-        $('[data-progress="input"]').value = JSON.stringify(demo, null, 2);
-        renderProgress(demo);
+        if (event.target.closest('[data-progress="demo"]')) {
+          var demo = core.demoMatches();
+          $('[data-progress="input"]').value = JSON.stringify(demo, null, 2);
+          renderProgress(demo);
+          return;
+        }
+        if (event.target.closest('[data-progress="lcu"]')) {
+          fetchBridge('/matches').then(function (matches) {
+            $('[data-progress="input"]').value = JSON.stringify(matches, null, 2);
+            renderProgress(matches);
+          }).catch(function (error) {
+            showError('[data-progress="out"]', error.message);
+          });
+        }
       });
     }
 
