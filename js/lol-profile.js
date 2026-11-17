@@ -486,16 +486,17 @@
       '</form>' +
       '<p class="lol-search__hint" data-lol="hint">' + (state.proxy ? 'Consultando el proxy configurado.' : 'Modo demo: los datos son de ejemplo, no de Riot.') + '</p>' +
       '<details class="lol-proxy">' +
-        '<summary class="lol-proxy__summary">Datos reales (opcional)</summary>' +
+        '<summary class="lol-proxy__summary">Conectar datos reales</summary>' +
         '<form class="lol-proxy__form" data-lol="proxyForm">' +
           '<label class="lol-search__field lol-proxy__field">' +
-            '<span class="lol-search__label">URL del proxy de Riot</span>' +
-            '<input class="lol-search__input" data-lol="proxyUrl" type="url" placeholder="https://tu-worker.workers.dev" value="' + escapeHtml(state.proxy) + '">' +
+            '<span class="lol-search__label">URL del servicio de datos</span>' +
+            '<input class="lol-search__input" data-lol="proxyUrl" type="url" placeholder="https://datos.tu-sitio.com" value="' + escapeHtml(state.proxy) + '">' +
           '</label>' +
           '<button class="lol-search__go" type="submit">Guardar</button>' +
           '<button class="lol-proxy__clear" type="button" data-lol="proxyClear">Quitar</button>' +
         '</form>' +
-        '<p class="lol-proxy__note">La Riot API no permite CORS desde el navegador. Desplegá <code>proxy/riot-proxy.mjs</code> (instrucciones en <code>proxy/README.md</code>) y pegá la URL acá.</p>' +
+        '<p class="lol-proxy__note">No hay nada que instalar: la página consulta un servicio que guarda la clave de Riot del lado del servidor. Sin servicio configurado, ves datos de demostración.</p>' +
+        '<p class="lol-proxy__note">Avanzado, solo en tu máquina: <code>tools/lcu-bridge.mjs</code> lee tu propio cliente de LoL.</p>' +
       '</details>' +
       '<div class="lol-status" data-lol="status" role="status" aria-live="polite"></div>' +
       '<div class="lol-view" data-lol="view"></div>';

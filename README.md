@@ -39,7 +39,20 @@ python -m http.server 8080   # o cualquier servidor estático
 node --test "tests/**/*.test.js"
 ```
 
-## Datos reales desde tu cliente (sin clave de Riot)
+## Datos reales para cualquier jugador (sin instalar nada)
+
+El jugador abre la página y escribe su Riot ID. La página consulta un **servicio
+nuestro** que guarda la clave de Riot del lado del servidor:
+
+```
+jugador → página → servicio (clave) → Riot API
+```
+
+Ese servicio ya está escrito: [`proxy/riot-proxy.mjs`](proxy/riot-proxy.mjs), un
+Worker de Cloudflare con plan gratuito. Instrucciones en
+[`proxy/README.md`](proxy/README.md).
+
+## Modo avanzado: leer tu propio cliente (solo tu máquina)
 
 Con el cliente de League abierto, el puente local lee tu perfil y tus partidas:
 
