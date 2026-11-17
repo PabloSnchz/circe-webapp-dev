@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="dark"/>
   <meta name="theme-color" content="#05070d"/>
-  <title>Circe — Perfil de invocador</title>
-  <meta name="description" content="Perfil de invocador de League of Legends: rango, forma reciente, roles, campeones e historial."/>
+  <title>Circe — Perfil, draft y progreso</title>
+  <meta name="description" content="Herramientas de League of Legends: perfil de invocador, análisis de draft, progreso personal y coach post-partida."/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
-  <link rel="stylesheet" href="css/lol.css?v=1.0.0"/>
+  <link rel="stylesheet" href="css/lol.css?v=1.1.0"/>
 </head>
 <body>
   <a class="lol-skip" href="#lolMain">Saltar al contenido</a>
@@ -22,45 +22,77 @@
     <div class="lol-brand">
       <span class="lol-brand__mark" aria-hidden="true">C</span>
       <span class="lol-brand__text">
-        <span class="lol-brand__title">Perfil de invocador</span>
-        <span class="lol-brand__sub">Circe</span>
+        <span class="lol-brand__title">Circe</span>
+        <span class="lol-brand__sub">League of Legends</span>
       </span>
     </div>
   </header>
 
   <main class="lol-page" id="lolMain">
     <p class="lol-lead">
-      Rango, forma reciente, roles, campeones e historial de un invocador.
-      <strong>Estética Wild Rift</strong>, lectura rápida y cero ruido.
+      Perfil, draft, progreso y análisis de partida. <strong>Sin cuenta y sin tracking</strong>:
+      todo corre en tu navegador.
     </p>
 
-    <!-- LoLProfile.mount() construye todo dentro de este contenedor. -->
-    <div id="lolRoot"></div>
+    <nav class="lol-tabs" role="tablist" aria-label="Herramientas">
+      <button class="lol-tab" type="button" role="tab" data-tab="perfil" aria-selected="true">Perfil</button>
+      <button class="lol-tab" type="button" role="tab" data-tab="draft" aria-selected="false">Draft</button>
+      <button class="lol-tab" type="button" role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
+      <button class="lol-tab" type="button" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
+    </nav>
+
+    <section data-panel="perfil">
+      <div id="lolRoot"></div>
+    </section>
+
+    <section data-panel="draft" hidden>
+      <p class="lol-search__hint">
+        Marcá tu campeón y el draft. El análisis sale de la composición, no de
+        estadísticas globales: sirve para decidir cómo jugar la partida.
+      </p>
+      <form data-draft="form" class="lol-panel"></form>
+      <div data-draft="out"></div>
+    </section>
+
+    <section data-panel="progreso" hidden>
+      <form class="lol-panel" data-progress="form">
+        <label class="lol-search__field">
+          <span class="lol-search__label">Historial de partidas (JSON)</span>
+          <textarea class="lol-textarea" data-progress="input" rows="8" placeholder='[{"champion":"Jinx","role":"ADC","result":"W","kills":9,"deaths":3,"assists":8,"cs":210,"duration":1800}]'></textarea>
+        </label>
+        <div class="lol-draft-actions">
+          <button class="lol-search__go" type="submit">Analizar progreso</button>
+          <button class="lol-proxy__clear" type="button" data-progress="demo">Cargar ejemplo</button>
+        </div>
+      </form>
+      <div data-progress="out"></div>
+    </section>
+
+    <section data-panel="analisis" hidden>
+      <form class="lol-panel" data-analysis="form">
+        <label class="lol-search__field">
+          <span class="lol-search__label">Una partida (JSON)</span>
+          <textarea class="lol-textarea" data-analysis="input" rows="8" placeholder='{"champion":"Jinx","role":"ADC","result":"L","kills":7,"deaths":6,"assists":5,"cs":178,"duration":1912,"events":[{"type":"death","minute":6}]}'></textarea>
+        </label>
+        <div class="lol-draft-actions">
+          <button class="lol-search__go" type="submit">Analizar partida</button>
+          <button class="lol-proxy__clear" type="button" data-analysis="demo">Cargar ejemplo</button>
+        </div>
+      </form>
+      <div data-analysis="out"></div>
+    </section>
   </main>
 
   <footer class="lol-page" style="padding-top:0">
     <p class="lol-search__hint">
-      Datos de demostración por defecto. Para datos reales, desplegá el proxy de
-      Riot incluido en <code>proxy/</code> y pegá su URL en la página. Íconos y
-      arte provienen de Data Dragon.
+      Datos de demostración por defecto. Para datos reales del perfil, desplegá el
+      proxy de Riot incluido en <code>proxy/</code> y pegá su URL en la pestaña Perfil.
+      Íconos y arte provienen de Data Dragon.
     </p>
   </footer>
 
   <script src="js/lol-profile.js?v=1.0.0"></script>
-  <script>
-    (function () {
-      'use strict';
-      function boot() {
-        var root = document.getElementById('lolRoot');
-        if (!root || !window.LoLProfile) return;
-        window.LoLProfile.mount(root, { region: 'LAS' });
-      }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-      } else {
-        boot();
-      }
-    })();
-  </script>
+  <script src="js/lol-core.js?v=1.0.0"></script>
+  <script src="js/lol-ui.js?v=1.0.0"></script>
 </body>
 </html>
