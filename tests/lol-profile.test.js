@@ -106,11 +106,12 @@ const cssRaw = fs.readFileSync(path.join(ROOT, 'css/lol.css'), 'utf8');
 const css = cssRaw.replace(/\/\*[\s\S]*?\*\//g, ''); // el comentario de cabecera puede nombrar la regla
 ok(!/!important/.test(css), 'css/lol.css no usa !important');
 ok(/\.lol-/.test(css), 'los estilos están prefijados con .lol-');
-const html = fs.readFileSync(path.join(ROOT, 'lol.html'), 'utf8');
-ok(html.indexOf('js/lol-profile.js') > 0, 'lol.html carga el módulo');
-ok(html.indexOf('css/lol.css') > 0, 'lol.html carga su hoja');
-ok(html.indexOf('assets/favicon.png') > 0, 'lol.html reutiliza el favicon del proyecto');
-ok(!/js\/router\.js/.test(html), 'lol.html no arrastra el router de la app');
+const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+ok(html.indexOf('js/lol-profile.js') > 0, 'index.html carga el módulo');
+ok(html.indexOf('css/lol.css') > 0, 'index.html carga su hoja');
+ok(html.indexOf('favicon.svg') > 0, 'index.html declara su favicon');
+ok(fs.existsSync(path.join(ROOT, 'favicon.svg')), 'el favicon existe en el repo');
+ok(!/router\.js/.test(html), 'index.html no arrastra código ajeno');
 
 console.log('\n' + pass + ' pass / ' + fail + ' FAIL');
 process.exit(fail ? 1 : 0);
