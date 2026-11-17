@@ -485,6 +485,18 @@
         '<button class="lol-search__go" type="submit">Analizar</button>' +
       '</form>' +
       '<p class="lol-search__hint" data-lol="hint">' + (state.proxy ? 'Consultando el proxy configurado.' : 'Modo demo: los datos son de ejemplo, no de Riot.') + '</p>' +
+      '<details class="lol-proxy">' +
+        '<summary class="lol-proxy__summary">Datos reales (opcional)</summary>' +
+        '<form class="lol-proxy__form" data-lol="proxyForm">' +
+          '<label class="lol-search__field lol-proxy__field">' +
+            '<span class="lol-search__label">URL del proxy de Riot</span>' +
+            '<input class="lol-search__input" data-lol="proxyUrl" type="url" placeholder="https://tu-worker.workers.dev" value="' + escapeHtml(state.proxy) + '">' +
+          '</label>' +
+          '<button class="lol-search__go" type="submit">Guardar</button>' +
+          '<button class="lol-proxy__clear" type="button" data-lol="proxyClear">Quitar</button>' +
+        '</form>' +
+        '<p class="lol-proxy__note">La Riot API no permite CORS desde el navegador. Desplegá <code>proxy/riot-proxy.mjs</code> (instrucciones en <code>proxy/README.md</code>) y pegá la URL acá.</p>' +
+      '</details>' +
       '<div class="lol-status" data-lol="status" role="status" aria-live="polite"></div>' +
       '<div class="lol-view" data-lol="view"></div>';
   }
@@ -590,11 +602,46 @@
       });
     }
 
-    if (hintEl) {
+    var proxyForm = root.querySelector('[data-lol="proxyForm"]');
+    var proxyInput = root.querySelector('[data-lol="proxyUrl"]');
+    var proxyClear = root.querySelector('[data-lol="proxyClear"]');
+
+    function updateHint() {
+      if (!hintEl) return;
       hintEl.textContent = state.proxy
-        ? 'Consultando el proxy configurado.'
+        ? 'Consultando datos reales a través del proxy configurado.'
         : 'Modo demo: los datos son de ejemplo, no de Riot.';
     }
+
+    if (proxyForm) {
+      proxyForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var value = proxyInput ? proxyInput.value.trim() : '';
+        if (value && !/^https?:\/\//i.test(value)) {
+          state.status = 'error';
+          state.error = 'La URL del proxy debe empezar con http:// o https://';
+          paint();
+          return;
+        }
+        state.proxy = value.replace(/\/+$/, '');
+        writeStore(STORE_PROXY, state.proxy);
+        if (proxyInput) proxyInput.value = state.proxy;
+        updateHint();
+        if (state.lastKey) search(state.lastKey);
+      });
+    }
+
+    if (proxyClear) {
+      proxyClear.addEventListener('click', function () {
+        state.proxy = '';
+        writeStore(STORE_PROXY, '');
+        if (proxyInput) proxyInput.value = '';
+        updateHint();
+        if (state.lastKey) search(state.lastKey);
+      });
+    }
+
+    updateHint();
 
     fetchDragonVersion().then(function (version) {
       state.version = version;
