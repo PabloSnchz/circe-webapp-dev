@@ -585,8 +585,16 @@
         paint();
         return state.profile;
       }).catch(function (error) {
-        // Si el servicio de datos falla, seguimos mostrando demo en vez de una
-        // pantalla rota. El aviso deja claro que no son datos reales.
+        var message = (error && error.message) || 'error';
+        // 404: el invocador no existe. Mostrar una ficha vacía sería mentir.
+        if (/404|no encontrado/i.test(message)) {
+          state.profile = null;
+          state.status = 'error';
+          state.error = 'No encontramos ese Riot ID en ' + state.region + '. Revisá el nombre, el tag y la región.';
+          paint();
+          return null;
+        }
+        // Otros fallos del servicio: seguimos con demo, avisando.
         if (state.proxy) {
           state.profile = normalizeProfile(demoProfile(key, state.region), splitSummoner(key));
           state.status = 'ready';
@@ -664,8 +672,8 @@
       if (state.status === 'ready') paint();
     });
 
-    if (options.autoLoad !== false) {
-      var initial = state.lastKey || options.initialSummoner || 'Katarina#LAS';
+    if (options.autoLoad !== false && state.lastKey) {
+      var initial = state.lastKey;
       if (nameEl) nameEl.value = initial;
       search(initial);
     } else {
