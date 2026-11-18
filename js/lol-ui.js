@@ -297,7 +297,8 @@
           return;
         }
         if (event.target.closest('[data-progress="lcu"]')) {
-          fetchBridge('/matches').then(function (matches) {
+          fetchBridge('/profile').then(function (perfil) {
+            var matches = (perfil && perfil.matches) || [];
             $('[data-progress="input"]').value = JSON.stringify(matches, null, 2);
             renderProgress(matches);
           }).catch(function (error) {
@@ -336,6 +337,16 @@
     document.addEventListener('click', function (event) {
       if (event.target && event.target.closest && event.target.closest('[data-extras="load"]')) renderExtras();
       if (event.target && event.target.closest && event.target.closest('[data-datos="load"]')) renderDatos();
+      if (event.target && event.target.closest && event.target.closest('[data-analysis="auto"]')) {
+        fetchBridge('/profile').then(function (perfil) {
+          var matches = (perfil && perfil.matches) || [];
+          if (!matches.length) throw new Error('No hay partidas para analizar.');
+          activate('analisis');
+          renderAnalysis(matches[0]);
+        }).catch(function (error) {
+          showError('[data-analysis="out"]', error.message);
+        });
+      }
     });
 
     // Clic en una partida del perfil: la manda al coach con sus eventos reales.
