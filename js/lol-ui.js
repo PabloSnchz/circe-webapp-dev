@@ -282,6 +282,19 @@
     });
     bindForms();
 
+    // Clic en una partida del perfil: la manda al coach con sus eventos reales.
+    document.addEventListener('click', function (event) {
+      var row = event.target && event.target.closest ? event.target.closest('[data-analyze]') : null;
+      if (!row) return;
+      var list = window.__circeMatches || [];
+      var match = list[Number(row.getAttribute('data-analyze'))];
+      if (!match) return;
+      activate('analisis');
+      var input = $('[data-analysis="input"]');
+      if (input) input.value = JSON.stringify(match, null, 2);
+      renderAnalysis(match);
+    });
+
     if (core) {
       core.fetchVersion().then(function (version) {
         return core.fetchChampions(version).catch(function () { return []; });

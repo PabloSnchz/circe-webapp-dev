@@ -417,10 +417,10 @@
 
   function matchRows(matches, version) {
     if (!matches.length) return '<p class="lol-empty-inline">Todavía no hay partidas.</p>';
-    return '<ol class="lol-matches">' + matches.map(function (m) {
+    return '<ol class="lol-matches">' + matches.map(function (m, index) {
       var win = m.result === 'W';
       return '' +
-        '<li class="lol-match ' + (win ? 'is-win' : 'is-loss') + '">' +
+        '<li class="lol-match ' + (win ? 'is-win' : 'is-loss') + '" data-analyze="' + index + '" title="Analizar esta partida">' +
           '<img class="lol-match__icon" src="' + championIcon(m.champion, version) + '" alt="" loading="lazy" onerror="this.classList.add(\'is-broken\')">' +
           '<div class="lol-match__champ"><strong>' + escapeHtml(m.champion) + '</strong><span>' + escapeHtml(m.role) + '</span></div>' +
           '<div class="lol-match__result">' + (win ? 'Victoria' : 'Derrota') + '</div>' +
@@ -504,6 +504,9 @@
   }
 
   function renderView(state) {
+    if (state.status === 'ready' && state.profile && state.profile.matches) {
+      window.__circeMatches = state.profile.matches;
+    }
     if (state.status === 'loading') {
       return '<div class="lol-skeleton" aria-hidden="true"><div class="lol-skeleton__hero"></div><div class="lol-skeleton__row"></div><div class="lol-skeleton__row"></div><div class="lol-skeleton__row"></div></div>';
     }

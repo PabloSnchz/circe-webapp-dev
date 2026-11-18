@@ -464,6 +464,7 @@ body {
   transition: transform var(--lol-ease), background var(--lol-ease);
 }
 .lol-match:hover { transform: translateX(3px); background: rgba(23, 35, 58, 0.6); }
+.lol-match { cursor: pointer; }
 .lol-match.is-win { border-left-color: rgba(47, 208, 165, 0.6); }
 .lol-match.is-loss { border-left-color: rgba(255, 92, 122, 0.6); }
 
