@@ -486,8 +486,8 @@
         '<button class="lol-search__go" type="submit">Analizar</button>' +
       '</form>' +
       '<p class="lol-search__hint" data-lol="hint">' + (state.proxy ? 'Consultando el proxy configurado.' : 'Modo demo: los datos son de ejemplo, no de Riot.') + '</p>' +
-      '<details class="lol-proxy">' +
-        '<summary class="lol-proxy__summary">Conectar datos reales</summary>' +
+      '<details class="lol-proxy lol-proxy--config">' +
+        '<summary class="lol-proxy__summary">Configuración del servicio</summary>' +
         '<form class="lol-proxy__form" data-lol="proxyForm">' +
           '<label class="lol-search__field lol-proxy__field">' +
             '<span class="lol-search__label">URL del servicio de datos</span>' +
