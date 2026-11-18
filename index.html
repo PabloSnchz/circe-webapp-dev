@@ -98,19 +98,19 @@
         <p class="lol-search__hint">Elegí un endpoint y el invocador. Muestra el JSON completo, sin recortes.</p>
         <div class="lol-draft-actions">
           <select class="lol-search__input" data-datos="endpoint" style="max-width:260px">
-            <option value="account">account-v1 · cuenta</option>
-            <option value="summoner">summoner-v4 · invocador</option>
-            <option value="league">league-v4 · rango</option>
-            <option value="mastery">champion-mastery-v4 · top 10</option>
-            <option value="matches">match-v5 · IDs de partidas</option>
-            <option value="timeline">match-v5 · timeline (matchId)</option>
-            <option value="challenges">challenges-v1 · desafíos</option>
-            <option value="clash">clash-v1 · equipos</option>
-            <option value="rotation">champion-v3 · rotación</option>
-            <option value="status">lol-status-v4 · plataforma</option>
+            <option value="account">Mi cuenta</option>
+            <option value="summoner">Mi invocador</option>
+            <option value="league">Mi rango</option>
+            <option value="mastery">Mis campeones (maestría)</option>
+            <option value="matches">Mis últimas partidas</option>
+            <option value="timeline">Detalle de una partida</option>
+            <option value="challenges">Mis desafíos</option>
+            <option value="clash">Mis equipos de Clash</option>
+            <option value="rotation">Gratis esta semana</option>
+            <option value="status">Estado del servidor</option>
           </select>
-          <input class="lol-search__input" data-datos="matchId" placeholder="matchId (solo timeline)" style="max-width:220px">
-          <button class="lol-search__go" type="button" data-datos="load">Consultar</button>
+          <input class="lol-search__input" data-datos="matchId" placeholder="ID de la partida" style="max-width:220px">
+          <button class="lol-search__go" type="button" data-datos="load">Ver</button>
         </div>
         <pre class="lol-json" data-datos="out"></pre>
       </div>
