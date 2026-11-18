@@ -460,7 +460,7 @@
             '<h2 class="lol-hero__name">' + escapeHtml(profile.summoner.name) +
               (profile.summoner.tag ? '<span class="lol-hero__tag">#' + escapeHtml(profile.summoner.tag) + '</span>' : '') +
             '</h2>' +
-            '<p class="lol-hero__meta">Nivel ' + profile.summoner.level + ' · ' + escapeHtml(profile.summoner.region) +
+            '<p class="lol-hero__meta">' + (profile.summoner.level > 0 ? 'Nivel ' + profile.summoner.level + ' · ' : '') + escapeHtml(profile.summoner.region) +
               (profile.demo ? ' · <span class="lol-demo">datos demo</span>' : '') +
             '</p>' +
           '</div>' +
