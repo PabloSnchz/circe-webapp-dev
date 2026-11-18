@@ -757,3 +757,51 @@ body {
   .lol-stat__value { font-size: 1.5rem; }
   .lol-tab { padding: 12px 14px; font-size: 0.64rem; }
 }
+
+/* ── Layout lateral: raíl de navegación + hero a sangre ────── */
+
+@media (min-width: 981px) {
+  .lol-tabs {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 212px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 110px 12px 24px;
+    border-right: 1px solid rgba(232, 201, 138, 0.12);
+    border-bottom: none;
+    background: rgba(4, 6, 12, 0.94);
+    backdrop-filter: blur(16px);
+  }
+
+  .lol-tab {
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 8px;
+    padding: 13px 18px;
+    letter-spacing: 0.16em;
+  }
+  .lol-tab.is-active {
+    border-bottom-color: transparent;
+    border-left-color: var(--lol-gold);
+    background: rgba(232, 201, 138, 0.07);
+  }
+
+  .lol-page {
+    margin-left: 212px;
+    max-width: none;
+    padding: 42px 48px 90px;
+  }
+
+  .lol-hero {
+    margin-inline: -48px;
+    border-radius: 0;
+    min-height: 420px;
+  }
+  .lol-hero__name { font-size: 3.1rem; }
+}
