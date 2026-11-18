@@ -452,7 +452,7 @@
     var splash = main ? championSplash(main.champion) : '';
     var style = splash ? ' style="--splash:url(\'' + splash.replace(/'/g, '%27') + '\')"' : '';
     return '' +
-      '<section class="lol-hero"' + style + '>' +
+      '<section class="lol-hero' + (splash ? '' : ' lol-hero--noart') + '"' + style + '>' +
         '<div class="lol-hero__art" aria-hidden="true"></div>' +
         '<div class="lol-hero__body">' +
           '<img class="lol-hero__avatar" src="' + profileIcon(profile.summoner.iconId, version) + '" alt="Icono de invocador" onerror="this.classList.add(\'is-broken\')">' +
@@ -556,6 +556,7 @@
 
     function paint() {
       view.innerHTML = renderView(state);
+      updateHint();
       if (statusEl) {
         statusEl.textContent = state.status === 'loading' ? 'Cargando perfil…' : (state.status === 'error' ? state.error : '');
       }
@@ -632,8 +633,14 @@
 
     function updateHint() {
       if (!hintEl) return;
+      if (state.status === 'loading') { hintEl.textContent = 'Consultando…'; return; }
+      if (state.status === 'error') { hintEl.textContent = ''; return; }
+      if (state.profile && state.profile.demo) {
+        hintEl.textContent = 'Datos de ejemplo: el invocador no se resolvió contra Riot.';
+        return;
+      }
       hintEl.textContent = state.proxy
-        ? 'Datos reales a través del servicio configurado.'
+        ? 'Datos reales de Riot a través del servicio.'
         : 'Modo demo: los datos son de ejemplo, no de Riot.';
     }
 

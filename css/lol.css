@@ -716,6 +716,14 @@ body {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
 }
 .lol-hero__art { opacity: 0.62; filter: saturate(1.15) contrast(1.05); }
+
+.lol-hero--noart .lol-hero__art {
+  opacity: 1;
+  background:
+    radial-gradient(circle at 22% 30%, rgba(46, 230, 214, 0.16), transparent 45%),
+    radial-gradient(circle at 78% 70%, rgba(232, 201, 138, 0.12), transparent 50%),
+    linear-gradient(135deg, #0d1729, #060a12 55%, #152038);
+}
 .lol-hero__name {
   font-family: "Cinzel Decorative", serif;
   font-size: 2.6rem;
