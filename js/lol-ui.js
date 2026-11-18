@@ -251,6 +251,29 @@
     });
   }
 
+  // ── Datos crudos ────────────────────────────────────────────
+
+  function renderDatos() {
+    var out = $('[data-datos="out"]');
+    var select = $('[data-datos="endpoint"]');
+    var matchInput = $('[data-datos="matchId"]');
+    if (!out || !select) return;
+    var base = bridgeUrl();
+    if (!base) { out.textContent = 'Configurá la URL del servicio en Perfil.'; return; }
+    var last = '';
+    try { last = localStorage.getItem('gn:lol:last') || ''; } catch (error) { last = ''; }
+    var parts = last.split('#');
+    var url = base + '/raw?endpoint=' + encodeURIComponent(select.value) + '&region=LAS' +
+      (parts.length === 2 ? '&gameName=' + encodeURIComponent(parts[0]) + '&tagLine=' + encodeURIComponent(parts[1]) : '') +
+      (matchInput && matchInput.value ? '&matchId=' + encodeURIComponent(matchInput.value.trim()) : '');
+    out.textContent = 'Consultando…';
+    fetch(url).then(function (response) { return response.json(); }).then(function (data) {
+      out.textContent = JSON.stringify(data, null, 2);
+    }).catch(function (error) {
+      out.textContent = 'Error: ' + error.message;
+    });
+  }
+
   // ── Arranque ────────────────────────────────────────────────
 
   function bindForms() {
@@ -312,6 +335,7 @@
 
     document.addEventListener('click', function (event) {
       if (event.target && event.target.closest && event.target.closest('[data-extras="load"]')) renderExtras();
+      if (event.target && event.target.closest && event.target.closest('[data-datos="load"]')) renderDatos();
     });
 
     // Clic en una partida del perfil: la manda al coach con sus eventos reales.

@@ -112,6 +112,47 @@ export default {
       });
     }
 
+    if (url.pathname === '/raw') {
+      const region = (url.searchParams.get('region') || 'LAS').toUpperCase();
+      const platform = PLATFORM[region.toLowerCase()] || 'la1';
+      const route = ROUTE[region.toLowerCase()] || 'americas';
+      const key = env.RIOT_API_KEY;
+      if (!key) return json({ error: 'Falta RIOT_API_KEY en el Worker' }, 500);
+      const what = url.searchParams.get('endpoint') || 'account';
+      const gameName = (url.searchParams.get('gameName') || '').trim();
+      const tagLine = (url.searchParams.get('tagLine') || '').trim();
+      try {
+        if (what === 'timeline') {
+          const matchId = url.searchParams.get('matchId');
+          if (!matchId) return json({ error: 'Falta matchId' }, 400);
+          return json({ endpoint: what, data: await riot('https://' + route + '.api.riotgames.com/lol/match/v5/matches/' + encodeURIComponent(matchId) + '/timeline', key) });
+        }
+        let puuid = url.searchParams.get('puuid') || '';
+        if (!puuid && gameName && tagLine) {
+          const acc = await riot('https://' + route + '.api.riotgames.com/riot/account/v1/accounts/by-riot-id/' +
+            encodeURIComponent(gameName) + '/' + encodeURIComponent(tagLine), key).catch(() => null);
+          puuid = (acc && acc.puuid) || '';
+        }
+        const targets = {
+          account: 'https://' + route + '.api.riotgames.com/riot/account/v1/accounts/by-puuid/' + puuid,
+          summoner: 'https://' + platform + '.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/' + puuid,
+          league: 'https://' + platform + '.api.riotgames.com/lol/league/v4/entries/by-puuid/' + puuid,
+          mastery: 'https://' + platform + '.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/' + puuid + '/top?count=10',
+          matches: 'https://' + route + '.api.riotgames.com/lol/match/v5/matches/by-puuid/' + puuid + '/ids?count=10',
+          challenges: 'https://' + platform + '.api.riotgames.com/lol/challenges/v1/player-data/' + puuid,
+          clash: 'https://' + platform + '.api.riotgames.com/lol/clash/v1/players/by-puuid/' + puuid,
+          rotation: 'https://' + platform + '.api.riotgames.com/lol/platform/v3/champion-rotations',
+          status: 'https://' + platform + '.api.riotgames.com/lol/status/v4/platform-data'
+        };
+        const target = targets[what];
+        if (!target) return json({ error: 'Endpoint no soportado' }, 400);
+        if (!puuid && what !== 'rotation' && what !== 'status') return json({ error: 'Falta el invocador' }, 400);
+        return json({ endpoint: what, data: await riot(target, key) });
+      } catch (error) {
+        return json({ error: String((error && error.message) || error) }, 500);
+      }
+    }
+
     if (url.pathname !== '/profile') return json({ error: 'Ruta no encontrada' }, 404);
 
     const gameName = (url.searchParams.get('gameName') || '').trim();

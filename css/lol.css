@@ -805,3 +805,18 @@ body {
   }
   .lol-hero__name { font-size: 3.1rem; }
 }
+.lol-json {
+  margin-top: 14px;
+  max-height: 520px;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--lol-bd);
+  border-radius: 12px;
+  background: rgba(4, 6, 12, 0.85);
+  color: var(--lol-tx-2);
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

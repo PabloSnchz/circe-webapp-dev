@@ -40,6 +40,7 @@
       <button class="lol-tab" type="button" role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
       <button class="lol-tab" type="button" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
       <button class="lol-tab" type="button" role="tab" data-tab="extras" aria-selected="false">Extras</button>
+      <button class="lol-tab" type="button" role="tab" data-tab="datos" aria-selected="false">Datos</button>
     </nav>
 
     <section data-panel="perfil">
@@ -91,6 +92,29 @@
           <button class="lol-search__go" type="button" data-extras="load">Consultar</button>
         </div>
         <div data-extras="out"></div>
+      </div>
+    </section>
+    <section data-panel="datos" hidden>
+      <div class="lol-panel">
+        <h3 class="lol-panel__title">Todo lo que devuelve la API</h3>
+        <p class="lol-search__hint">Elegí un endpoint y el invocador. Muestra el JSON completo, sin recortes.</p>
+        <div class="lol-draft-actions">
+          <select class="lol-search__input" data-datos="endpoint" style="max-width:260px">
+            <option value="account">account-v1 · cuenta</option>
+            <option value="summoner">summoner-v4 · invocador</option>
+            <option value="league">league-v4 · rango</option>
+            <option value="mastery">champion-mastery-v4 · top 10</option>
+            <option value="matches">match-v5 · IDs de partidas</option>
+            <option value="timeline">match-v5 · timeline (matchId)</option>
+            <option value="challenges">challenges-v1 · desafíos</option>
+            <option value="clash">clash-v1 · equipos</option>
+            <option value="rotation">champion-v3 · rotación</option>
+            <option value="status">lol-status-v4 · plataforma</option>
+          </select>
+          <input class="lol-search__input" data-datos="matchId" placeholder="matchId (solo timeline)" style="max-width:220px">
+          <button class="lol-search__go" type="button" data-datos="load">Consultar</button>
+        </div>
+        <pre class="lol-json" data-datos="out"></pre>
       </div>
     </section>
   </main>
