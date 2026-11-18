@@ -659,3 +659,93 @@ body {
   .lol-finding { grid-template-columns: 1fr; }
   .lol-finding__level { justify-self: start; }
 }
+
+/* ── Rediseño v2: capa cinematográfica ─────────────────────── */
+
+:root {
+  --lol-bg-0: #04060c;
+  --lol-bg-1: #0a1120;
+  --lol-bg-2: #0f1a2e;
+  --lol-gold: #e8c98a;
+  --lol-gold-soft: #fff4dc;
+  --lol-blue: #2ee6d6;
+  --lol-loss: #ff6b8a;
+}
+
+.lol-page { max-width: 1200px; padding: 40px 28px 80px; }
+
+.lol-brand__title {
+  font-family: "Cinzel Decorative", serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  color: var(--lol-gold-soft);
+  text-shadow: 0 0 24px rgba(232, 201, 138, 0.35);
+}
+
+.lol-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  gap: 0;
+  background: rgba(4, 6, 12, 0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(232, 201, 138, 0.12);
+}
+
+.lol-tab {
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 15px 22px;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  color: var(--lol-tx-3);
+}
+.lol-tab.is-active {
+  background: transparent;
+  color: var(--lol-gold-soft);
+  border-bottom-color: var(--lol-gold);
+}
+.lol-tab:hover { color: var(--lol-tx-1); }
+
+.lol-hero {
+  border-radius: 24px;
+  min-height: 340px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+.lol-hero__art { opacity: 0.62; filter: saturate(1.15) contrast(1.05); }
+.lol-hero__name {
+  font-family: "Cinzel Decorative", serif;
+  font-size: 2.6rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.8);
+}
+
+.lol-stat {
+  border-radius: 18px;
+  padding: 20px 22px;
+  background: linear-gradient(160deg, rgba(20, 32, 56, 0.9), rgba(8, 12, 22, 0.95));
+  border: 1px solid rgba(232, 201, 138, 0.14);
+  border-left: 3px solid rgba(46, 230, 214, 0.55);
+}
+.lol-stat__value { font-size: 2rem; font-family: "Cinzel Decorative", serif; }
+
+.lol-panel {
+  border-radius: 20px;
+  padding: 22px 24px;
+  background: linear-gradient(165deg, rgba(14, 24, 44, 0.92), rgba(6, 10, 18, 0.95));
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.lol-panel__title { color: var(--lol-gold); letter-spacing: 0.22em; font-size: 0.7rem; }
+
+.lol-match { border-radius: 14px; background: rgba(8, 12, 22, 0.7); }
+.lol-match:hover { transform: translateX(6px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+.lol-champ:hover { transform: translateY(-6px) scale(1.02); }
+
+@media (max-width: 860px) {
+  .lol-hero__name { font-size: 1.8rem; }
+  .lol-stat__value { font-size: 1.5rem; }
+  .lol-tab { padding: 12px 14px; font-size: 0.64rem; }
+}
