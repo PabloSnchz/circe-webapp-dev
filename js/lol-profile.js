@@ -29,6 +29,7 @@
 
   var DDRAGON = 'https://ddragon.leagueoflegends.com';
   var FALLBACK_VERSION = '14.24.1';
+  var DEFAULT_PROXY = 'https://riot-proxy.circe-lol.workers.dev';
   var STORE_LAST = 'gn:lol:last';
   var STORE_PROXY = 'gn:lol:proxy';
   var REGIONS = ['LAS', 'LAN', 'NA', 'BR', 'EUW', 'EUNE', 'KR', 'JP', 'OCE', 'TR', 'RU'];
@@ -515,6 +516,7 @@
     var profile = state.profile;
     var results = profile.matches.map(function (m) { return m.result; });
     return '' +
+      (state.notice ? '<p class="lol-notice" role="status">' + escapeHtml(state.notice) + '</p>' : '') +
       hero(profile, state.version) +
       summaryCards(profile) +
       '<section class="lol-panel"><h3 class="lol-panel__title">Forma reciente</h3>' + formStrip(results) + '</section>' +
@@ -535,7 +537,8 @@
       profile: null,
       version: options.version || FALLBACK_VERSION,
       region: options.region || 'LAS',
-      proxy: options.proxyUrl || readStore(STORE_PROXY) || '',
+      proxy: options.proxyUrl || readStore(STORE_PROXY) || DEFAULT_PROXY,
+      notice: '',
       lastKey: readStore(STORE_LAST) || ''
     };
 
@@ -579,6 +582,15 @@
         paint();
         return state.profile;
       }).catch(function (error) {
+        // Si el servicio de datos falla, seguimos mostrando demo en vez de una
+        // pantalla rota. El aviso deja claro que no son datos reales.
+        if (state.proxy) {
+          state.profile = normalizeProfile(demoProfile(key, state.region), splitSummoner(key));
+          state.status = 'ready';
+          state.notice = 'El servicio de datos no respondió (' + ((error && error.message) || 'error') + '). Mostrando datos de ejemplo.';
+          paint();
+          return state.profile;
+        }
         state.profile = null;
         state.status = 'error';
         state.error = (error && error.message) || 'Error desconocido';
@@ -610,7 +622,7 @@
     function updateHint() {
       if (!hintEl) return;
       hintEl.textContent = state.proxy
-        ? 'Consultando datos reales a través del proxy configurado.'
+        ? 'Datos reales a través del servicio configurado.'
         : 'Modo demo: los datos son de ejemplo, no de Riot.';
     }
 
