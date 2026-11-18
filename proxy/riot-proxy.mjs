@@ -106,12 +106,16 @@ export default {
           encodeURIComponent(account.puuid) + '/ids?start=0&count=20', key);
 
       const matches = [];
-      for (const id of (ids || []).slice(0, 20)) {
+      const list = (ids || []).slice(0, 20);
+      for (let index = 0; index < list.length; index += 1) {
+        const id = list[index];
         const match = await riot('https://' + route + '.api.riotgames.com/lol/match/v5/matches/' + id, key);
         if (!match || !match.info) continue;
         const me = (match.info.participants || []).find((p) => p.puuid === account.puuid);
         if (!me) continue;
-        matches.push({
+        const teamById = {};
+        for (const p of match.info.participants || []) teamById[p.participantId] = p.teamId;
+        const entry = {
           champion: me.championName,
           role: roleFromPosition(me.teamPosition),
           result: me.win ? 'W' : 'L',
@@ -120,9 +124,29 @@ export default {
           assists: me.assists,
           cs: Number(me.totalMinionsKilled || 0) + Number(me.neutralMinionsKilled || 0),
           duration: match.info.gameDuration,
-          playedAt: new Date(match.info.gameEndTimestamp || match.info.gameStartTimestamp || Date.now()).toISOString()
-        });
+          vision: Number(me.visionScore || 0),
+          patch: String(match.info.gameVersion || ''),
+          teamKills: (match.info.participants || []).filter((p) => p.teamId === me.teamId)
+            .reduce((acc, p) => acc + Number(p.kills || 0), 0),
+          playedAt: new Date(match.info.gameEndTimestamp || match.info.gameStartTimestamp || Date.now()).toISOString(),
+          events: [],
+          goldDiff15: 0
+        };
+        if (index < 5) {
+          const timeline = await riot('https://' + route + '.api.riotgames.com/lol/match/v5/matches/' + id + '/timeline', key).catch(() => null);
+          if (timeline) {
+            const facts = timelineFacts(timeline, account.puuid, teamById);
+            entry.events = facts.events;
+            entry.goldDiff15 = facts.goldDiff15;
+          }
+        }
+        matches.push(entry);
       }
+
+      const mastery = await riot('https://' + platform + '.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/' +
+        encodeURIComponent(account.puuid) + '/top?count=5', key).catch(() => null);
+      const live = await riot('https://' + platform + '.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/' +
+        encodeURIComponent(account.puuid), key).catch(() => null);
 
       return json({
         summoner: {
@@ -133,6 +157,12 @@ export default {
           iconId: Number((summoner && summoner.profileIconId) || 29)
         },
         rank,
+        mastery: (Array.isArray(mastery) ? mastery : []).map((m) => ({
+          championId: Number(m.championId || 0),
+          level: Number(m.championLevel || 0),
+          points: Number(m.championPoints || 0)
+        })),
+        live: live != null,
         matches,
         demo: false
       });
@@ -141,3 +171,47 @@ export default {
     }
   }
 };
+
+/**
+ * Muertes propias con minuto y marca de "antes de objetivo enemigo",
+ * más la diferencia de oro al minuto 15.
+ */
+function timelineFacts(timeline, puuid, teamById) {
+  const info = (timeline && timeline.info) || {};
+  const me = (info.participants || []).find((p) => p.puuid === puuid);
+  if (!me) return { events: [], goldDiff15: 0 };
+  const myId = me.participantId;
+  const myTeam = teamById[myId];
+  const deaths = [];
+  const enemyObjectives = [];
+  let goldDiff15 = 0;
+
+  for (const frame of info.frames || []) {
+    for (const event of frame.events || []) {
+      if (event.type === 'CHAMPION_KILL' && Number(event.victimId) === myId) {
+        deaths.push({ type: 'death', minute: Math.round(Number(event.timestamp || 0) / 60000) });
+      }
+      if (event.type === 'ELITE_MONSTER_KILL' && Number(event.killerTeamId) !== Number(myTeam) &&
+          ['DRAGON', 'BARON_NASHOR', 'RIFTHERALD', 'HORDE'].indexOf(event.monsterType) >= 0) {
+        enemyObjectives.push(Number(event.timestamp || 0) / 60000);
+      }
+    }
+    if (Number(frame.timestamp || 0) / 60000 <= 15) {
+      let mine = 0;
+      let theirs = 0;
+      for (const key of Object.keys(frame.participantFrames || {})) {
+        const p = frame.participantFrames[key];
+        const team = teamById[p.participantId];
+        if (team == null) continue;
+        if (Number(team) === Number(myTeam)) mine += Number(p.totalGold || 0);
+        else theirs += Number(p.totalGold || 0);
+      }
+      if (mine || theirs) goldDiff15 = mine - theirs;
+    }
+  }
+
+  for (const death of deaths) {
+    death.beforeObjective = enemyObjectives.some((m) => m >= death.minute && m - death.minute <= 1);
+  }
+  return { events: deaths, goldDiff15 };
+}
