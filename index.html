@@ -39,6 +39,7 @@
       <button class="lol-tab" type="button" role="tab" data-tab="draft" aria-selected="false">Draft</button>
       <button class="lol-tab" type="button" role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
       <button class="lol-tab" type="button" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
+      <button class="lol-tab" type="button" role="tab" data-tab="extras" aria-selected="false">Extras</button>
     </nav>
 
     <section data-panel="perfil">
@@ -81,6 +82,16 @@
         </div>
       </form>
       <div data-analysis="out"></div>
+    </section>
+    <section data-panel="extras" hidden>
+      <div class="lol-panel">
+        <h3 class="lol-panel__title">Estado de la plataforma y extras</h3>
+        <p class="lol-search__hint">Servidor, rotación gratuita, desafíos y partida en vivo del último invocador buscado.</p>
+        <div class="lol-draft-actions">
+          <button class="lol-search__go" type="button" data-extras="load">Consultar</button>
+        </div>
+        <div data-extras="out"></div>
+      </div>
     </section>
   </main>
 

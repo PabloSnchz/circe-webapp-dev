@@ -61,6 +61,57 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
     if (url.pathname === '/health') return json({ ok: true });
 
+    if (url.pathname === '/extras') {
+      const region = (url.searchParams.get('region') || 'LAS').toUpperCase();
+      const platform = PLATFORM[region.toLowerCase()] || 'la1';
+      const route = ROUTE[region.toLowerCase()] || 'americas';
+      const key = env.RIOT_API_KEY;
+      if (!key) return json({ error: 'Falta RIOT_API_KEY en el Worker' }, 500);
+
+      const status = await riot('https://' + platform + '.api.riotgames.com/lol/status/v4/platform-data', key).catch(() => null);
+      const rotation = await riot('https://' + platform + '.api.riotgames.com/lol/platform/v3/champion-rotations', key).catch(() => null);
+
+      const gameName = (url.searchParams.get('gameName') || '').trim();
+      const tagLine = (url.searchParams.get('tagLine') || '').trim();
+      let challenges = null;
+      let live = null;
+
+      if (gameName && tagLine) {
+        const account = await riot('https://' + route + '.api.riotgames.com/riot/account/v1/accounts/by-riot-id/' +
+          encodeURIComponent(gameName) + '/' + encodeURIComponent(tagLine), key).catch(() => null);
+        if (account && account.puuid) {
+          const player = await riot('https://' + platform + '.api.riotgames.com/lol/challenges/v1/player-data/' +
+            account.puuid, key).catch(() => null);
+          if (player) {
+            challenges = {
+              total: Number(player.totalPoints || 0),
+              category: Number((player.categoryPoints && player.categoryPoints.COLLECTION) || 0),
+              top: (player.challenges || []).filter((c) => c.level === 'MASTER' || c.level === 'GRANDMASTER' || c.level === 'CHALLENGER')
+                .slice(0, 5).map((c) => ({ id: c.challengeId, level: c.level, value: c.value }))
+            };
+          }
+          const game = await riot('https://' + platform + '.api.riotgames.com/lol/spectator/v5/active-games/by-summoner/' +
+            account.puuid, key).catch(() => null);
+          live = game ? { active: true, mode: String(game.gameMode || ''), length: Number(game.gameLength || 0) } : { active: false };
+        }
+      }
+
+      return json({
+        region,
+        status: status ? {
+          name: status.name,
+          incidents: (status.incidents || []).length,
+          maintenances: (status.maintenances || []).length
+        } : null,
+        rotation: rotation ? {
+          free: (rotation.freeChampionIds || []).length,
+          newPlayer: (rotation.freeChampionIdsForNewPlayers || []).length
+        } : null,
+        challenges,
+        live
+      });
+    }
+
     if (url.pathname !== '/profile') return json({ error: 'Ruta no encontrada' }, 404);
 
     const gameName = (url.searchParams.get('gameName') || '').trim();

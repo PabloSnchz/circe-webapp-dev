@@ -223,6 +223,34 @@
       '</ul></section>';
   }
 
+  // ── Extras ──────────────────────────────────────────────────
+
+  function renderExtras() {
+    var out = $('[data-extras="out"]');
+    if (!out) return;
+    var base = bridgeUrl();
+    if (!base) { out.innerHTML = '<p class="lol-empty-inline">Configurá la URL del servicio en la pestaña Perfil.</p>'; return; }
+    var last = '';
+    try { last = localStorage.getItem('gn:lol:last') || ''; } catch (error) { last = ''; }
+    var parts = last.split('#');
+    var url = base + '/extras?region=LAS' + (parts.length === 2
+      ? '&gameName=' + encodeURIComponent(parts[0]) + '&tagLine=' + encodeURIComponent(parts[1]) : '');
+    out.innerHTML = '<p class="lol-empty-inline">Consultando…</p>';
+    fetch(url).then(function (response) { return response.json(); }).then(function (data) {
+      function card(label, value) {
+        return '<div class="lol-stat"><span class="lol-stat__label">' + esc(label) + '</span><strong class="lol-stat__value">' + esc(value) + '</strong></div>';
+      }
+      out.innerHTML = '<div class="lol-summary">' +
+        card('Plataforma', data.status ? (data.status.incidents ? data.status.incidents + ' incidentes' : 'operativa') : 'sin dato') +
+        card('Rotación gratuita', data.rotation ? data.rotation.free + ' campeones' : 'sin dato') +
+        card('Desafíos', data.challenges ? data.challenges.total + ' puntos' : 'sin dato') +
+        card('Partida en vivo', data.live ? (data.live.active ? 'sí · ' + data.live.mode : 'no') : 'sin invocador') +
+        '</div>';
+    }).catch(function (error) {
+      out.innerHTML = '<div class="lol-error" role="alert">' + esc(error.message) + '</div>';
+    });
+  }
+
   // ── Arranque ────────────────────────────────────────────────
 
   function bindForms() {
@@ -281,6 +309,10 @@
       btn.addEventListener('click', function () { activate(btn.getAttribute('data-tab')); });
     });
     bindForms();
+
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.closest && event.target.closest('[data-extras="load"]')) renderExtras();
+    });
 
     // Clic en una partida del perfil: la manda al coach con sus eventos reales.
     document.addEventListener('click', function (event) {
