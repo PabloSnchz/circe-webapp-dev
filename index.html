@@ -40,7 +40,6 @@
       <button class="lol-tab" type="button" role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
       <button class="lol-tab" type="button" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
       <button class="lol-tab" type="button" role="tab" data-tab="extras" aria-selected="false">Extras</button>
-      <button class="lol-tab" type="button" role="tab" data-tab="datos" aria-selected="false">Datos</button>
     </nav>
 
     <section data-panel="perfil">
@@ -90,29 +89,6 @@
           <button class="lol-search__go" type="button" data-extras="load">Consultar</button>
         </div>
         <div data-extras="out"></div>
-      </div>
-    </section>
-    <section data-panel="datos" hidden>
-      <div class="lol-panel">
-        <h3 class="lol-panel__title">Todo lo que devuelve la API</h3>
-        <p class="lol-search__hint">Elegí un endpoint y el invocador. Muestra el JSON completo, sin recortes.</p>
-        <div class="lol-draft-actions">
-          <select class="lol-search__input" data-datos="endpoint" style="max-width:260px">
-            <option value="account">Mi cuenta</option>
-            <option value="summoner">Mi invocador</option>
-            <option value="league">Mi rango</option>
-            <option value="mastery">Mis campeones (maestría)</option>
-            <option value="matches">Mis últimas partidas</option>
-            <option value="timeline">Detalle de una partida</option>
-            <option value="challenges">Mis desafíos</option>
-            <option value="clash">Mis equipos de Clash</option>
-            <option value="rotation">Gratis esta semana</option>
-            <option value="status">Estado del servidor</option>
-          </select>
-          <input class="lol-search__input" data-datos="matchId" placeholder="ID de la partida" style="max-width:220px">
-          <button class="lol-search__go" type="button" data-datos="load">Ver</button>
-        </div>
-        <pre class="lol-json" data-datos="out"></pre>
       </div>
     </section>
   </main>
