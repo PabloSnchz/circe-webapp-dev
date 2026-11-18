@@ -268,7 +268,35 @@
       (matchInput && matchInput.value ? '&matchId=' + encodeURIComponent(matchInput.value.trim()) : '');
     out.textContent = 'Consultando…';
     fetch(url).then(function (response) { return response.json(); }).then(function (data) {
-      out.textContent = JSON.stringify(data, null, 2);
+      var payload = data && data.data !== undefined ? data.data : data;
+      out.textContent = '';
+      var wrap = document.createElement('div');
+      wrap.className = 'lol-rows';
+      if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+        Object.keys(payload).forEach(function (key) {
+          var value = payload[key];
+          if (value && typeof value === 'object') value = Array.isArray(value) ? value.length + ' elementos' : 'detalle';
+          var row = document.createElement('div');
+          row.className = 'lol-row';
+          row.innerHTML = '<span>' + esc(key.replace(/([A-Z])/g, ' $1').toLowerCase()) + '</span><strong>' + esc(String(value)) + '</strong>';
+          wrap.appendChild(row);
+        });
+      } else if (Array.isArray(payload)) {
+        payload.slice(0, 25).forEach(function (item, index) {
+          var row = document.createElement('div');
+          row.className = 'lol-row';
+          var label = item && (item.championName || item.championId || item.summonerName || item.teamId || item.id || item);
+          row.innerHTML = '<span>#' + (index + 1) + '</span><strong>' + esc(typeof label === 'object' ? 'elemento' : String(label)) + '</strong>';
+          wrap.appendChild(row);
+        });
+      } else {
+        wrap.innerHTML = '<div class="lol-row"><span>resultado</span><strong>' + esc(String(payload)) + '</strong></div>';
+      }
+      out.appendChild(wrap);
+      var code = document.createElement('details');
+      code.className = 'lol-code';
+      code.innerHTML = '<summary>Ver el JSON</summary><pre class="lol-json">' + esc(JSON.stringify(data, null, 2)) + '</pre>';
+      out.appendChild(code);
     }).catch(function (error) {
       out.textContent = 'Error: ' + error.message;
     });

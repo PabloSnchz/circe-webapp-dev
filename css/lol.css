@@ -824,3 +824,11 @@ body {
 /* Configuración: discreta por defecto */
 .lol-proxy--config { opacity: 0.55; margin-top: 8px; }
 .lol-proxy--config:hover, .lol-proxy--config[open] { opacity: 1; }
+
+/* Datos legibles, no JSON */
+.lol-rows { display: grid; gap: 6px; margin-top: 12px; }
+.lol-row { display: flex; justify-content: space-between; gap: 16px; padding: 10px 14px; border: 1px solid var(--lol-bd); border-radius: 10px; background: rgba(5, 7, 13, 0.55); font-size: 0.86rem; }
+.lol-row span { color: var(--lol-tx-3); text-transform: capitalize; }
+.lol-row strong { color: var(--lol-tx-1); font-weight: 600; text-align: right; }
+.lol-code { margin-top: 12px; }
+.lol-code summary { cursor: pointer; color: var(--lol-tx-3); font-size: 0.8rem; }
