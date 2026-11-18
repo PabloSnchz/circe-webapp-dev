@@ -42,6 +42,7 @@ function json(body, status = 200) {
 async function riot(path, key) {
   const response = await fetch(path, { headers: { 'X-Riot-Token': key } });
   if (response.status === 404) return null;
+  if (response.status === 401) throw new Error('Riot no reconoce la clave (Unknown apikey). Copiá de nuevo la Development API Key del panel: cambia cada vez que la regenerás.');
   if (response.status === 403) throw new Error('La clave de Riot no es válida o expiró');
   if (response.status === 429) throw new Error('Límite de peticiones de Riot alcanzado, probá en un minuto');
   if (!response.ok) throw new Error('Riot respondió ' + response.status);
